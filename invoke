@@ -1,0 +1,36 @@
+//pesquisar invoke e assinar
+
+public delegate void EventHandler(double num1, double num2, double result);
+
+public class Calculadora 
+{
+    public event EventHandler Changed;
+
+    public double Soma(double num1, double num2)
+    {
+        double result = num1 + num2;
+        Changed?.Invoke(num1, num2, result);// caso seja nulo não invoca nada
+        return result;
+    }
+    public double Subtracao(double num1, double num2)
+    {
+        double result = num1 - num2;
+        Changed?.Invoke(num1, num2, result);
+        return result;
+    }
+    class Program
+    {
+        public static void Main()
+        {
+            Calculadora calc = new Calculadora();
+            calc.Changed += GerandoLog;
+            calc.Soma(10,10);
+            calc.Subtracao(3, 4);
+        }
+        public static void GerandoLog(double num1, double num2, double result)
+        {
+            Console.WriteLine($"A operação com {num1} e {num2}, resultado em {result}");
+        }
+    }
+   
+}
